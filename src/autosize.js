@@ -27,7 +27,7 @@ tagsInput.directive('tiAutosize', function(tagsInputConfig) {
             resize = function(originalValue) {
                 var value = originalValue, width;
 
-                if (angular.isString(value) && value.length === 0) {
+                if (angular.isString(value) && value.length === 0 && attrs.placeholder !== '-1') {
                     value = attrs.placeholder;
                 }
 
@@ -47,7 +47,7 @@ tagsInput.directive('tiAutosize', function(tagsInputConfig) {
             ctrl.$formatters.unshift(resize);
 
             attrs.$observe('placeholder', function(value) {
-                if (!ctrl.$modelValue) {
+                if (!ctrl.$modelValue && value !== '-1') {
                     resize(value);
                 }
             });

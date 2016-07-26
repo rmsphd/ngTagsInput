@@ -1,0 +1,71 @@
+<html ng-app="plunker">
+<head>
+    <script src="test/lib/angular.js"></script>
+    <script src="build/ng-tags-input.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="build/ng-tags-input.min.css">
+    <style>
+        tags-input {
+            height: 40px;
+        }
+        .hasfocus {
+            color: red;
+        }
+    </style>
+</head>
+  <body ng-controller="MainCtrl">
+      <span ng-class="{'hasfocus':hasFocus}">TESTE</span>
+    <tags-input ng-model="tags" on-focus-change="focusChange($hasFocus)" placeholder="-1">
+      <auto-complete source="loadTags($query)" min-length="0" load-on-empty="true"></auto-complete>
+    </tags-input>
+    <p>Model: {{tags}}</p>
+    <button ng-click="testeClick()">TESTE CLICK</button>
+        <script>
+var app = angular.module('plunker', ['ngTagsInput']);
+
+app.controller('MainCtrl', function($scope, tags) {
+  $scope.tags = [
+    { text: 'Tag1' },
+    { text: 'Tag2' },
+    { text: 'Tag3' }
+  ];
+   
+  $scope.loadTags = function(query) {
+    return tags.load();
+  };
+  $scope.focusChange = function($hasFocus,parm2) {
+    console.log('focusChange');
+    $scope.hasFocus = this.$$childHead.hasFocus;
+  }; 
+
+  $scope.testeClick = function() {
+    console.log('click');
+    var el = document.querySelector('div.tags');
+    
+    document.querySelector('input').focus();
+    angular.element(el).scope().events.trigger('input-change');
+  };    
+});
+
+app.service('tags', function($q) {
+  var tags = [
+    { "text": "Tag1" },
+    { "text": "Tag2" },
+    { "text": "Tag3" },
+    { "text": "Tag4" },
+    { "text": "Tag5" },
+    { "text": "Tag6" },
+    { "text": "Tag7" },
+    { "text": "Tag8" },
+    { "text": "Tag9" },
+    { "text": "Tag10" }
+  ];
+  
+  this.load = function() {
+    var deferred = $q.defer();
+    deferred.resolve(tags);
+    return deferred.promise;
+  };
+});
+    </script>
+  </body>
+</html>

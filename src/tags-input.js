@@ -173,6 +173,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
             onTagRemoving: '&',
             onTagRemoved: '&',
             onTagClicked: '&',
+            onFocusChange: '&'
         },
         replace: false,
         transclude: true,
@@ -333,6 +334,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
 
                         scope.hasFocus = true;
                         events.trigger('input-focus');
+                        events.trigger('focus-change');
                     },
                     blur: function() {
                         $timeout(function() {
@@ -342,6 +344,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
 
                             if (lostFocusToBrowserWindow || !lostFocusToChildElement) {
                                 scope.hasFocus = false;
+                                events.trigger('focus-change');
                                 events.trigger('input-blur');
                             }
                         });
@@ -374,6 +377,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                 .on('invalid-tag', scope.onInvalidTag)
                 .on('tag-removed', scope.onTagRemoved)
                 .on('tag-clicked', scope.onTagClicked)
+                .on('focus-change', scope.onFocusChange)
                 .on('tag-added', function() {
                     scope.newTag.text('');
                 })
